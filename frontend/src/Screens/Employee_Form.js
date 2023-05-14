@@ -1,20 +1,42 @@
+// Importing the useState hook
 import { useState } from 'react';
 
+//Creating the AddEmployeeForm component with props parameter
 function AddEmployeeForm(props) {
-  const [fullName, setFullName] = useState('');
-  const [nameWithInitials, setNameWithInitials] = useState('');
-  const [preferredName, setPreferredName] = useState('');
-  const [gender, setGender] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [designation, setDesignation] = useState('');
-  const [employeeType, setEmployeeType] = useState('');
-  const [joinedDate, setJoinedDate] = useState('');
-  const [experience, setExperience] = useState('');
-  const [salary, setSalary] = useState('');
-  const [personalNotes, setPersonalNotes] = useState('');
+  //Defining the state values for all the input fields
+  const [fullName, setFullName] = useState(props.editEmplyee?.fullName || '');
+  const [nameWithInitials, setNameWithInitials] = useState(
+    props.editEmplyee?.nameWithInitials || ''
+  );
+  const [preferredName, setPreferredName] = useState(
+    props.editEmplyee?.preferredName || ''
+  );
+  const [gender, setGender] = useState(props.editEmplyee?.gender || '');
+  const [dateOfBirth, setDateOfBirth] = useState(
+    props.editEmplyee?.dateOfBirth || ''
+  );
+  const [email, setEmail] = useState(props.editEmplyee?.email || '');
+  const [mobileNumber, setMobileNumber] = useState(
+    props.editEmplyee?.mobileNumber || ''
+  );
+  const [designation, setDesignation] = useState(
+    props.editEmplyee?.designation || ''
+  );
+  const [employeeType, setEmployeeType] = useState(
+    props.editEmplyee?.employeeType || ''
+  );
+  const [joinedDate, setJoinedDate] = useState(
+    props.editEmplyee?.joinedDate || ''
+  );
+  const [experience, setExperience] = useState(
+    props.editEmplyee?.experience || ''
+  );
+  const [salary, setSalary] = useState(props.editEmplyee?.salary || '');
+  const [personalNotes, setPersonalNotes] = useState(
+    props.editEmplyee?.personalNotes || ''
+  );
 
+  // Handling changes in the input fields
   const handleFullNameChange = (event) => {
     setFullName(event.target.value);
   };
@@ -51,8 +73,8 @@ function AddEmployeeForm(props) {
     setEmployeeType(event.target.value);
   };
 
-  const handleJoinedDateChange = (date) => {
-    setJoinedDate(date);
+  const handleJoinedDateChange = (event) => {
+    setJoinedDate(event.target.value);
   };
 
   const handleExperienceChange = (event) => {
@@ -66,6 +88,7 @@ function AddEmployeeForm(props) {
     setPersonalNotes(event.target.value);
   };
 
+  // Handling the cancel button click
   const handleCancel = () => {
     setFullName('');
     setNameWithInitials('');
@@ -83,6 +106,7 @@ function AddEmployeeForm(props) {
     props.onCancel();
   };
 
+  // Handling the submit button click
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -102,7 +126,18 @@ function AddEmployeeForm(props) {
       personalNotes: personalNotes,
     };
 
-    props.onAddEmployee(newEmployee);
+    fetch(
+      `http://localhost:5000/employees${
+        props.editEmplyee ? `/${props.editEmplyee._id}` : ''
+      }`,
+      {
+        method: props.editEmplyee ? 'PUT' : 'POST',
+        body: JSON.stringify(newEmployee),
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+
+    props.onCancel();
 
     // clear form fields
     setFullName('');
@@ -122,6 +157,7 @@ function AddEmployeeForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Full Name input */}
       <div className="mb-3">
         <label htmlFor="fullName" className="form-label">
           Full Name <span style={{ color: 'red' }}>*</span>
@@ -137,6 +173,7 @@ function AddEmployeeForm(props) {
         />
       </div>
 
+      {/* Name with Initials*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="nameWithInitials" className="form-label">
@@ -152,6 +189,7 @@ function AddEmployeeForm(props) {
             required
           />
         </div>
+        {/* Preferred/Display Name inputs*/}
         <div className="col">
           <label htmlFor="preferredName" className="form-label">
             Preferred/ Display Name
@@ -168,6 +206,7 @@ function AddEmployeeForm(props) {
         </div>
       </div>
 
+      {/* Gender inputs*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="gender" className="form-label">
@@ -185,6 +224,8 @@ function AddEmployeeForm(props) {
             <option value="female">Female</option>
           </select>
         </div>
+
+        {/* Date of Birth inputs*/}
         <div className="col">
           <label htmlFor="dateOfBirth" className="form-label">
             Date of Birth
@@ -199,6 +240,8 @@ function AddEmployeeForm(props) {
           />
         </div>
       </div>
+
+      {/* email inputs*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="email" className="form-label">
@@ -214,6 +257,8 @@ function AddEmployeeForm(props) {
             onChange={handleEmailChange}
           />
         </div>
+
+        {/* Mobile Number inputs*/}
         <div className="col">
           <label htmlFor="mobileNumber" className="form-label">
             Mobile Number
@@ -229,6 +274,8 @@ function AddEmployeeForm(props) {
           />
         </div>
       </div>
+
+      {/* Designation inputs*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="designation" className="form-label">
@@ -244,6 +291,8 @@ function AddEmployeeForm(props) {
             onChange={handleDesignationChange}
           />
         </div>
+
+        {/* Employee Type inputs*/}
         <div className="col">
           <label htmlFor="employeeType" className="form-label">
             Employee Type
@@ -263,6 +312,7 @@ function AddEmployeeForm(props) {
         </div>
       </div>
 
+      {/* Joined date inputs*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="joinedDate" className="form-label">
@@ -279,6 +329,7 @@ function AddEmployeeForm(props) {
           />
         </div>
 
+        {/* Experience inputs*/}
         <div className="col">
           <label htmlFor="experience" className="form-label">
             Experience
@@ -302,6 +353,7 @@ function AddEmployeeForm(props) {
         </div>
       </div>
 
+      {/* Salary inputs*/}
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="salary" className="form-label">
@@ -319,6 +371,7 @@ function AddEmployeeForm(props) {
         </div>
       </div>
 
+      {/* Personal Notes inputs*/}
       <div className="mb-3">
         <label htmlFor="personalNotes" className="form-label">
           Personal Notes
@@ -342,7 +395,7 @@ function AddEmployeeForm(props) {
           Cancel
         </button>
         <button type="submit" className="btn btn-primary">
-          Add People
+          {props.editEmplyee ? 'Update' : 'Add'}
         </button>
       </div>
     </form>
