@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+.table_screen {
+  margin: 20px;
+}
+
+.header {
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.form-select {
+  width: 200px;
+  margin-right: 20px;
+  padding-right: 10px;
+}
+.btn {
+  margin-right: 20px;
+}
+
+.col .form-select {
+  width: 220px;
+}
+
+.col {
+  max-width: 50%;
+}
+.table .btn btn-link {
+  color: #282c34;
+}
